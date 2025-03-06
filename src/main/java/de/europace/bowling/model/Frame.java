@@ -1,9 +1,7 @@
 package de.europace.bowling.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,24 +33,24 @@ public class Frame {
 		
 		roll.setRollNumber(idx + 1);
 		
-		//logger.info("Roll: " + rollString);
+		logger.info("Roll: " + rollString);
 		
 		switch(rollString) {
 			case "X":
 				roll.setNumberOfKnockedDownPins(10);
 				if (roll.getRollNumber() < 3)
-					this.setType(type.STRIKE);
+					this.setType(Type.STRIKE);
 				break;
 			case "/":
 				int numberOfKnockedDownPinsInPreviousRoll = getRolls().get(idx - 1).getNumberOfKnockedDownPins();
 				roll.setNumberOfKnockedDownPins(10 - numberOfKnockedDownPinsInPreviousRoll);
 				if (roll.getRollNumber() < 3)
-					this.setType(type.SPARE);
+					this.setType(Type.SPARE);
 				break;
 			default:
 				roll.setNumberOfKnockedDownPins(Integer.valueOf(rollString));
 				if (roll.getRollNumber() < 3)
-					this.setType(type.STANDARD);
+					this.setType(Type.STANDARD);
 		}
 			
 		rolls.add(roll);

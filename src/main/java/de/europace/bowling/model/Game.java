@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.europace.bowling.enumeration.Type;
-import de.europace.bowling.service.FileService;
 
 public class Game {
 	
@@ -38,7 +37,7 @@ public class Game {
 		
 		frame.setFrameNumber(idx);
 		
-		//logger.info("Frame: " + frameString);
+		logger.info("Frame: " + frameString);
 		
 		List<String> rollStrings = Arrays.asList(frameString.split(":"));
 		
@@ -57,18 +56,32 @@ public class Game {
 			int result = frame.getRolls().stream().mapToInt(r -> r.getNumberOfKnockedDownPins()).sum();
 			
 			if (frameNumber > 1) {
-				result += frames.get(frameNumber - 2).getResult(); 
+				int predecessorArrayIndex = frameNumber - 2;
+				result += frames.get(predecessorArrayIndex).getResult(); 
 			}
 			
 			if (frame.getType().equals(Type.STRIKE)) {
-				if (frameNumber < 10)
-					result += frames.get(frameNumber).getRolls().stream().mapToInt(r -> {
+				if (frameNumber < 10) {
+					int successorArrayIndex = frameNumber;
+					result += frames.get(successorArrayIndex).getRolls().stream().mapToInt(r -> {
 						if (r.getRollNumber() < 3) {
 							return r.getNumberOfKnockedDownPins();
 						} else {
 							return 0;
 							}
 					}).sum();
+					
+					if (frames.get(successorArrayIndex).getType().equals(Type.STRIKE) &&
+							frameNumber < 9) {
+						result += frames.get(successorArrayIndex + 1).getRolls().stream().mapToInt(r -> {
+							if (r.getRollNumber() == 1) {
+								return r.getNumberOfKnockedDownPins();
+							} else {
+								return 0;
+								}
+						}).sum();
+					}
+				}
 			}
 			
 			if (frame.getType().equals(Type.SPARE)) {

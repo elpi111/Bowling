@@ -19,13 +19,14 @@ public class Bowling implements CommandLineRunner {
 	}
 	
 	public void run(String[] args) {
-		Game game = fileService.getNextGame();	
-		int result = game.calculateResult();
-		System.out.println("Result: " + result);
+		Game game = null;
+		int result = 0;
 		
-		game = fileService.getNextGame();	
-		result = game.calculateResult();
-		System.out.println("Result: " + result);
+		while (fileService.hasNextGame()) {
+			game = fileService.getNextGame();	
+			result = game.calculateResult();
+			System.out.println("Result: " + result);	
+		}
 	}
 
 }

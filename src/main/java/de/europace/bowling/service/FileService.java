@@ -19,18 +19,14 @@ package de.europace.bowling.service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import de.europace.bowling.config.AppConfig;
-import de.europace.bowling.model.Frame;
 import de.europace.bowling.model.Game;
 
 @Component
@@ -43,6 +39,10 @@ public class FileService {
 	private List<String> lines;
 	
 	private Iterator<String> iterator;
+	
+	public FileService() {
+		
+	}
 	
 	public FileService(AppConfig appConfig) {
 		this.appConfig = appConfig;
@@ -57,6 +57,10 @@ public class FileService {
         }
 	}
 	
+	public void init(List<String> lines) {
+		this.lines = lines;
+		iterator = lines.iterator();
+	}
 	
 	public Game getNextGame() {
 		Game game = null;
@@ -70,5 +74,9 @@ public class FileService {
 		}
 		
 		return game;
+	}
+	
+	public boolean hasNextGame() {
+		return iterator.hasNext();
 	}
 }
