@@ -18,7 +18,7 @@ public class Bowling implements CommandLineRunner {
 		SpringApplication.run(Bowling.class, args);
 	}
 	
-	public void run(String[] args) {
+	public void run(String ... args) {
 		Game game = null;
 		int result = 0;
 		
